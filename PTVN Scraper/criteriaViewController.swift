@@ -10,18 +10,13 @@ import Cocoa
 
 class criteriaViewController: NSViewController {
 
-	@IBOutlet weak var window: NSWindow!
-	
 	@IBOutlet weak var timeSelectorMatrix: NSMatrix!
 	@IBOutlet weak var currentDate: NSTextField!
 	@IBOutlet weak var onDate: NSDatePicker!
 	@IBOutlet weak var afterDate: NSDatePicker!
 	@IBOutlet weak var betweenStartDate: NSDatePicker!
 	@IBOutlet weak var betweenEndDate: NSDatePicker!
-	
-	
-	//Create an NSFileManager to use with the file enumeration we'll be doing later
-	let fileManager = FileManager.default
+
 	
 	var basePath = NSHomeDirectory()
 	var selectorTag = Int()
@@ -41,11 +36,9 @@ class criteriaViewController: NSViewController {
     }
 	
 	func processTheDirectory() -> [URL] {
-		if let theSelectorTab = timeSelectorMatrix.selectedCell()?.tag {
-			selectorTag = theSelectorTab
-			print("Current button selected is \(selectorTag)")
+		if let theSelectorTag = timeSelectorMatrix.selectedCell()?.tag {
+			selectorTag = theSelectorTag
 		}
-		print("Current button selected is \(selectorTag)")
 		
 		/*Addend the path to the WPCMSharedFiles folder for the office machines to create a default selection.
 		This requires all the computers this code runs on to have a folder named WPCMSharedFiles
@@ -81,12 +74,6 @@ class criteriaViewController: NSViewController {
 		}
 		
 		return theResults
-		
-//		let theUserFont:NSFont = NSFont.systemFont(ofSize: 18)
-//		let fontAttributes = NSDictionary(object: theUserFont, forKey: NSFontAttributeName as NSCopying)
-//		resultsView.typingAttributes = fontAttributes as! [String : AnyObject]
-//		resultsView.string = "NEEDED SCRIPTS\n\(theResults)"
-//		resultsWindow.makeKeyAndOrderFront(self)
 	}
 	
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
