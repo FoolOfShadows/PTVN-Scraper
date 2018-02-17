@@ -16,6 +16,7 @@ enum TimeMatched {
 }
 
 func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), status:TimeMatched) -> [URL] {
+	print("Getting matching file names")
 	//Convert URL array to String array using compactMap (which replaces flatMap) to filter out nil values
 	//let filesAsStrings = files.compactMap {$0.urlIntoCleanString()}
 	let formatter = DateFormatter()
@@ -45,13 +46,14 @@ func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), stat
 			}
 		}
 	}
-	
+	//print("Matching files: \(results)")
 	return results
 }
 
-func processTheFiles(_ theFiles:[URL]?) -> String {
-	var neededRxs = [""]
-	var results = ""
+func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
+	print("Processing the files")
+	var neededRxs = [VisitData]()
+	//var results = ""
 	if let thePTVNText = theFiles {
 		for file in thePTVNText {
 			do {
@@ -60,29 +62,26 @@ func processTheFiles(_ theFiles:[URL]?) -> String {
 				let dobResults = getDOBInfo(ptvnContents)
 				let nameResults = getNameInfo(ptvnContents)
 				let markedResults = getMarkedLines(ptvnContents)
-				if (rxResults != "") && (markedResults != "") {
-					neededRxs.append("\(nameResults) (DOB \(dobResults)) \n \(addCharactersToFront(rxResults, theCharacters: "- "))\n\(addCharactersToFront(markedResults, theCharacters: "- "))")
-				} else if (rxResults != "") || (markedResults != "") {
-					neededRxs.append("\(nameResults) (DOB \(dobResults)) \n \(addCharactersToFront(rxResults, theCharacters: "- "))\(addCharactersToFront(markedResults, theCharacters: "- "))")
+				
+				if (!rxResults.isEmpty) && (!markedResults.isEmpty) {
+					neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
+				} else if (!rxResults.isEmpty) || (!markedResults.isEmpty) {
+					neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
 				}
 			} catch {
 				print("Ended up in the CATCH clause")
 			}
 		}
-		if neededRxs != [""] {
-			results = neededRxs.joined(separator: "\n\n")
-		}
 	}
-	
-	print(results)
-	return results
+	print(neededRxs)
+	return neededRxs
 }
 
 func getNameInfo(_ theText:String) -> String {
 	var nameInfo = ""
 	
 	let separatedText = theText.components(separatedBy: "\n")
-	print(separatedText)
+	//print(separatedText)
 	nameInfo = separatedText[0].removeWhiteSpace()
 	
 	return nameInfo
@@ -95,16 +94,17 @@ func getDOBInfo(_ theText:String) -> String {
 	return dobInfo
 }
 
-func getRxInfo(_ theText:String) -> String {
+func getRxInfo(_ theText:String) -> [String] {
 	var rxInfo = ""
-	guard let rawNeededScripts = theText.findRegexMatchBetween("\\*\\*Rx\\*\\*", and: "O\\(PE\\):") else { return "" }
+	guard let rawNeededScripts = theText.findRegexMatchBetween("\\*\\*Rx\\*\\*", and: "O\\(PE\\):") else { return [] }
 	rxInfo = rawNeededScripts.removeWhiteSpace()
-	return rxInfo
+	let rxData = rxInfo.components(separatedBy: "\n")
+	return rxData
 }
 
-func getMarkedLines(_ theText:String) -> String {
+func getMarkedLines(_ theText:String) -> [String] {
 	var markedLines = [String]()
-	var results = String()
+	//var results = String()
 	let theLines = theText.components(separatedBy: "\n")
 	for line in theLines {
 		if line.contains("^^") {
@@ -112,8 +112,7 @@ func getMarkedLines(_ theText:String) -> String {
 			markedLines.append(cleanLine)
 		}
 	}
-	results = markedLines.joined(separator: "\n")
-	return results
+	return markedLines
 }
 
 //Add specific characters to the beginning of each line

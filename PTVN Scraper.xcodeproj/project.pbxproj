@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		790CCCEF2035CDB000041D22 /* VisitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790CCCEE2035CDB000041D22 /* VisitData.swift */; };
+		790CCCF12035E5E600041D22 /* TaskPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790CCCF02035E5E600041D22 /* TaskPickerViewController.swift */; };
 		7912B7FD2034950A0062FEFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7912B7FC2034950A0062FEFC /* AppDelegate.swift */; };
 		7912B8012034950D0062FEFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7912B8002034950D0062FEFC /* Assets.xcassets */; };
 		7912B8042034950D0062FEFC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7912B8022034950D0062FEFC /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		790CCCEE2035CDB000041D22 /* VisitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitData.swift; sourceTree = "<group>"; };
+		790CCCF02035E5E600041D22 /* TaskPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPickerViewController.swift; sourceTree = "<group>"; };
 		7912B7F92034950A0062FEFC /* PTVN Scraper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PTVN Scraper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7912B7FC2034950A0062FEFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7912B8002034950D0062FEFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,11 +67,13 @@
 				7912B80D2034952E0062FEFC /* criteriaViewController.swift */,
 				7912B80C2034952E0062FEFC /* DataProcessingModel.swift */,
 				7912B80E2034952E0062FEFC /* resultsViewController.swift */,
+				790CCCEE2035CDB000041D22 /* VisitData.swift */,
 				7912B80F2034952E0062FEFC /* StringExtensions.swift */,
 				7912B8002034950D0062FEFC /* Assets.xcassets */,
 				7912B8022034950D0062FEFC /* Main.storyboard */,
 				7912B8052034950D0062FEFC /* Info.plist */,
 				7912B8062034950D0062FEFC /* PTVN_Scraper.entitlements */,
+				790CCCF02035E5E600041D22 /* TaskPickerViewController.swift */,
 			);
 			path = "PTVN Scraper";
 			sourceTree = "<group>";
@@ -149,9 +155,11 @@
 			files = (
 				7912B8102034952E0062FEFC /* DataProcessingModel.swift in Sources */,
 				7912B7FD2034950A0062FEFC /* AppDelegate.swift in Sources */,
+				790CCCF12035E5E600041D22 /* TaskPickerViewController.swift in Sources */,
 				7912B8132034952E0062FEFC /* StringExtensions.swift in Sources */,
 				7912B8112034952E0062FEFC /* criteriaViewController.swift in Sources */,
 				7912B8122034952E0062FEFC /* resultsViewController.swift in Sources */,
+				790CCCEF2035CDB000041D22 /* VisitData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

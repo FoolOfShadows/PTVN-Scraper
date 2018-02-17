@@ -51,13 +51,12 @@ class criteriaViewController: NSViewController {
 			originFolderURL = URL(fileURLWithPath: "\(basePath)/WPCMSharedFiles/zDonna Review/01 PTVN Files")
 		}
 		
-		print("\(originFolderURL)")
+		//print("\(originFolderURL)")
 		return originFolderURL.getFilesInDirectoryWhereNameContains(["PTVN"])
-		//return getFilesFromDirectory(originFolderURL, whereNameIncludes: ["PTVN"])
 	}
 	
-	func takeFind() -> String {
-		var theResults = String()
+	func takeFind() -> [VisitData]? {
+		var theResults = [VisitData]()
 		let theFileURLs = processTheDirectory()
 		switch selectorTag {
 		case 0:
@@ -70,7 +69,8 @@ class criteriaViewController: NSViewController {
 		case 3:
 			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: betweenStartDate.dateValue, end: betweenEndDate.dateValue), status: .between))
 		default:
-			return "Failed to identify files to process"
+			print("Find ended up in the default case")
+			return nil
 		}
 		
 		return theResults
@@ -79,7 +79,22 @@ class criteriaViewController: NSViewController {
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
 		if segue.identifier!.rawValue == "showReport" {
 			if let toViewController = segue.destinationController as? resultsViewController {
-				toViewController.results = takeFind()
+				var results = [String]()
+				if let processedFiles = takeFind() {
+					for file in processedFiles {
+						if !file.tasks.isEmpty && file.tasks != [""] {
+							print("Tasks for patient \(file.ptName) = \(file.tasks)")
+						results.append(file.reportOutput())
+						}
+					}
+				}
+				toViewController.results = results.joined(separator: "\n\n")
+			}
+		} else if segue.identifier!.rawValue == "pick" {
+			if let toViewController = segue.destinationController as? TaskPickerViewController {
+				if let visitDataArray = takeFind() {
+				toViewController.visitDataArray = visitDataArray
+				}
 			}
 		}
 	}
