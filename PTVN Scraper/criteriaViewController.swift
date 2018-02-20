@@ -62,8 +62,10 @@ class criteriaViewController: NSViewController {
 		switch selectorTag {
 		case 0:
 			let today = Date()
+			print(today)
 			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: today, end: nil), status: .on))
 		case 1:
+			print(onDate.dateValue)
 			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: onDate.dateValue, end: nil), status: .on))
 		case 2:
 			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: afterDate.dateValue, end: nil), status: .after))
@@ -85,7 +87,7 @@ class criteriaViewController: NSViewController {
 				if let processedFiles = takeFind() {
 					for file in processedFiles {
 						if !file.tasks.isEmpty && file.tasks != [""] {
-							print("Tasks for patient \(file.ptName) = \(file.tasks)")
+							//print("Tasks for patient \(file.ptName) = \(file.tasks)")
 						results.append(file.reportOutput())
 						}
 					}
@@ -102,5 +104,9 @@ class criteriaViewController: NSViewController {
 				}
 			}
 		}
+	}
+	
+	@IBAction func clearChosenItems(_ sender: Any) {
+		chosenItems = [String]()
 	}
 }

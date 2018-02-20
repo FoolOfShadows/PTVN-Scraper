@@ -16,13 +16,13 @@ enum TimeMatched {
 }
 
 func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), status:TimeMatched) -> [URL] {
-	print("Getting matching file names")
+	//print("Getting matching file names")
 	//Convert URL array to String array using compactMap (which replaces flatMap) to filter out nil values
 	//let filesAsStrings = files.compactMap {$0.urlIntoCleanString()}
 	let formatter = DateFormatter()
 	formatter.dateFormat = "yyMMdd"
 	var results = [URL]()
-	
+	print(formatter.string(from: date.start))
 	switch status {
 	case .on: results = files.filter{$0.absoluteString.contains(formatter.string(from: date.start))}
 	case .before: results = []
@@ -51,7 +51,7 @@ func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), stat
 }
 
 func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
-	print("Processing the files")
+	//print("Processing the files")
 	var neededRxs = [VisitData]()
 	//var results = ""
 	if let thePTVNText = theFiles {
@@ -73,7 +73,7 @@ func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
 			}
 		}
 	}
-	print(neededRxs)
+	//print(neededRxs)
 	return neededRxs
 }
 

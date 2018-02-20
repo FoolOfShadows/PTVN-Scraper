@@ -26,21 +26,21 @@ extension String {
 	
 	func findRegexMatchBetween(_ start: String, and end: String) -> String? {
 		guard let startRegex = try? NSRegularExpression(pattern: start, options: []) else { return nil }
-		Swift.print(startRegex)
+		//Swift.print(startRegex)
 		guard let endRegex = try? NSRegularExpression(pattern: end, options: []) else {return nil }
-		Swift.print(endRegex)
+		//Swift.print(endRegex)
 		
 		let startMatch = startRegex.matches(in: self, options: [], range: NSRange(location: 0, length: self.count))
-		Swift.print(startMatch)
+		//Swift.print(startMatch)
 		let endMatch = endRegex.matches(in: self, options: [], range: NSRange(location: 0, length: self.count))
-		Swift.print(endMatch)
+		//Swift.print(endMatch)
 		
 		if !startMatch.isEmpty && !endMatch.isEmpty {
 			
 			let startRange = startMatch[0].range
-			Swift.print(startRange)
+			//Swift.print(startRange)
 			let endRange = endMatch[0].range
-			Swift.print(endRange)
+			//Swift.print(endRange)
 			
 			if startRange.location > endRange.location {
 				return "There is a formatting error in this patients PTVN."

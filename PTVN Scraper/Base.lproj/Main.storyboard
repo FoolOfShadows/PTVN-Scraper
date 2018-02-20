@@ -727,18 +727,30 @@
                                         <buttonCell type="radio" title="Today" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="DD6-mt-gZD">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system" size="16"/>
+                                            <connections>
+                                                <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="Zwq-c0-PZu"/>
+                                            </connections>
                                         </buttonCell>
                                         <buttonCell type="radio" title="On" bezelStyle="regularSquare" imagePosition="left" alignment="left" tag="1" inset="2" id="ZVB-Ow-OE0">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system" size="16"/>
+                                            <connections>
+                                                <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="my6-86-OSB"/>
+                                            </connections>
                                         </buttonCell>
                                         <buttonCell type="radio" title="After" bezelStyle="regularSquare" imagePosition="left" alignment="left" tag="2" inset="2" id="xjW-JL-5m6">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system" size="16"/>
+                                            <connections>
+                                                <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="oEl-i3-kXR"/>
+                                            </connections>
                                         </buttonCell>
                                         <buttonCell type="radio" title="Between" bezelStyle="regularSquare" imagePosition="left" alignment="left" tag="3" inset="2" id="vYQ-uU-QQt">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system" size="16"/>
+                                            <connections>
+                                                <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="dYF-HU-Gl3"/>
+                                            </connections>
                                         </buttonCell>
                                     </column>
                                 </cells>
@@ -763,6 +775,9 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </datePickerCell>
+                                <connections>
+                                    <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="fVp-eL-CDq"/>
+                                </connections>
                             </datePicker>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HZ1-cW-oNu">
                                 <rect key="frame" x="123" y="13" width="89" height="32"/>
@@ -787,6 +802,9 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </datePickerCell>
+                                <connections>
+                                    <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="A2J-aN-My2"/>
+                                </connections>
                             </datePicker>
                             <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mN6-f3-vDb">
                                 <rect key="frame" x="113" y="107" width="96" height="27"/>
@@ -799,6 +817,9 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </datePickerCell>
+                                <connections>
+                                    <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="vdY-ma-IvO"/>
+                                </connections>
                             </datePicker>
                             <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAP-4X-7SA">
                                 <rect key="frame" x="113" y="76" width="96" height="27"/>
@@ -811,6 +832,9 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </datePickerCell>
+                                <connections>
+                                    <action selector="clearChosenItems:" target="XfG-lQ-9wD" id="5qa-dE-obZ"/>
+                                </connections>
                             </datePicker>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RI4-6o-s24">
                                 <rect key="frame" x="77" y="76" width="30" height="19"/>
@@ -974,7 +998,6 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="7wq-SW-fcP" firstAttribute="leading" secondItem="1Zm-dD-pws" secondAttribute="leading" constant="20" id="04R-qA-OqS"/>
-                            <constraint firstItem="nFg-8m-XEt" firstAttribute="leading" secondItem="1Zm-dD-pws" secondAttribute="leading" constant="424" id="5cF-dJ-z5x"/>
                             <constraint firstAttribute="trailing" secondItem="e2s-Wl-c9c" secondAttribute="trailing" constant="20" id="C2O-lj-mw3"/>
                             <constraint firstItem="e2s-Wl-c9c" firstAttribute="leading" secondItem="nFg-8m-XEt" secondAttribute="trailing" constant="24" id="R4b-3k-FEx"/>
                             <constraint firstItem="7wq-SW-fcP" firstAttribute="top" secondItem="1Zm-dD-pws" secondAttribute="top" constant="20" id="R9j-s0-te6"/>

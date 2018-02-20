@@ -21,13 +21,12 @@ class TaskPickerViewController: NSViewController, NSTableViewDelegate, NSTableVi
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do view setup here.
-		print("Hi")
 		selectTasksTableView.dataSource = self
 		selectTasksTableView.delegate = self
 		
 		for item in visitDataArray {
 			if !item.tasks.isEmpty && item.tasks != [""] {
-				resultsDict[item.ptName] = item.tasks
+				resultsDict[item.ptName] = cleanTheSelection(item.tasks, badBits: badBits)
 			}
 		}
 		for item in resultsDict {
@@ -35,7 +34,7 @@ class TaskPickerViewController: NSViewController, NSTableViewDelegate, NSTableVi
 				tableArray.append("\(item.key): \(task)")
 			}
 		}
-		print(tableArray)
+		//print(tableArray)
 	}
 	
 //	func tableView(tableView: NSTableView, sectionForRow row: Int) -> (section: Int, row: Int) {
@@ -75,7 +74,7 @@ class TaskPickerViewController: NSViewController, NSTableViewDelegate, NSTableVi
 	@IBAction func continueWithSelectedItems(_ sender: Any) {
 		let originatingVC = presenting as! criteriaViewController
 		originatingVC.chosenItems = chosenItems
-		print("You have chosen:\n\(chosenItems)")
+		//print("You have chosen:\n\(chosenItems)")
 		chosenItems = [String]()
 		self.dismiss(self)
 	}

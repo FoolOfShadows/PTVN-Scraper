@@ -16,6 +16,7 @@
 		7912B8112034952E0062FEFC /* criteriaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7912B80D2034952E0062FEFC /* criteriaViewController.swift */; };
 		7912B8122034952E0062FEFC /* resultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7912B80E2034952E0062FEFC /* resultsViewController.swift */; };
 		7912B8132034952E0062FEFC /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7912B80F2034952E0062FEFC /* StringExtensions.swift */; };
+		7951E6F2203C90B800936B0E /* TaskPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951E6F1203C90B800936B0E /* TaskPickerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		7912B80D2034952E0062FEFC /* criteriaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = criteriaViewController.swift; sourceTree = "<group>"; };
 		7912B80E2034952E0062FEFC /* resultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = resultsViewController.swift; sourceTree = "<group>"; };
 		7912B80F2034952E0062FEFC /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		7951E6F1203C90B800936B0E /* TaskPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPickerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				7912B8052034950D0062FEFC /* Info.plist */,
 				7912B8062034950D0062FEFC /* PTVN_Scraper.entitlements */,
 				790CCCF02035E5E600041D22 /* TaskPickerViewController.swift */,
+				7951E6F1203C90B800936B0E /* TaskPickerModel.swift */,
 			);
 			path = "PTVN Scraper";
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 			files = (
 				7912B8102034952E0062FEFC /* DataProcessingModel.swift in Sources */,
 				7912B7FD2034950A0062FEFC /* AppDelegate.swift in Sources */,
+				7951E6F2203C90B800936B0E /* TaskPickerModel.swift in Sources */,
 				790CCCF12035E5E600041D22 /* TaskPickerViewController.swift in Sources */,
 				7912B8132034952E0062FEFC /* StringExtensions.swift in Sources */,
 				7912B8112034952E0062FEFC /* criteriaViewController.swift in Sources */,
