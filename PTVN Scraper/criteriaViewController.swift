@@ -20,6 +20,7 @@ class criteriaViewController: NSViewController {
 	
 	var basePath = NSHomeDirectory()
 	var selectorTag = Int()
+	var chosenItems = [String]()
 	
 	
     override func viewDidLoad() {
@@ -80,6 +81,7 @@ class criteriaViewController: NSViewController {
 		if segue.identifier!.rawValue == "showReport" {
 			if let toViewController = segue.destinationController as? resultsViewController {
 				var results = [String]()
+				if chosenItems.isEmpty {
 				if let processedFiles = takeFind() {
 					for file in processedFiles {
 						if !file.tasks.isEmpty && file.tasks != [""] {
@@ -89,6 +91,9 @@ class criteriaViewController: NSViewController {
 					}
 				}
 				toViewController.results = results.joined(separator: "\n\n")
+				} else {
+					toViewController.results = chosenItems.joined(separator: "\n\n")
+				}
 			}
 		} else if segue.identifier!.rawValue == "pick" {
 			if let toViewController = segue.destinationController as? TaskPickerViewController {
