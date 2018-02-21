@@ -58,10 +58,10 @@ func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
 		for file in thePTVNText {
 			do {
 				let ptvnContents = try String(contentsOf: file, encoding: .utf8)
-				let rxResults = getRxInfo(ptvnContents)
+				let rxResults = cleanTheSelection(getRxInfo(ptvnContents), badBits: badBits)
 				let dobResults = getDOBInfo(ptvnContents)
 				let nameResults = getNameInfo(ptvnContents)
-				let markedResults = getMarkedLines(ptvnContents)
+				let markedResults = cleanTheSelection(getMarkedLines(ptvnContents), badBits: badBits)
 				
 				if (!rxResults.isEmpty) && (!markedResults.isEmpty) {
 					neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))

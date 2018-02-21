@@ -14,7 +14,7 @@ let badBits = ["Tests ordered:", "Referrals made to:",]
 func cleanTheSelection(_ theSection:[String], badBits:[String]) -> [String] {
 	var selection = theSection
 	for bit in badBits {
-		selection = selection.filter {($0 != bit) && ($0.removeWhiteSpace() != "")}
+		selection = selection.filter {($0.removeWhiteSpace() != bit) && ($0.removeWhiteSpace() != "")}
 	}
 	
 	return selection
