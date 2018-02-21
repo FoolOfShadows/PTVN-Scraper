@@ -26,7 +26,7 @@ class TaskPickerViewController: NSViewController, NSTableViewDelegate, NSTableVi
 		
 		for item in visitDataArray {
 			if !item.tasks.isEmpty && item.tasks != [""] {
-				resultsDict[item.ptName] = cleanTheSelection(item.tasks, badBits: badBits)
+				resultsDict["\(item.ptName) (\(item.dateOfBirth))"] = cleanTheSelection(item.tasks, badBits: badBits)
 			}
 		}
 		for item in resultsDict {
