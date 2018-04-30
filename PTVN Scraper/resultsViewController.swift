@@ -12,15 +12,20 @@ class resultsViewController: NSViewController {
 	@IBOutlet var resultsView: NSTextView!
 	var results = String()
 	
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+        
+        let today = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d/yy"
+        
 		
 		let theUserFont:NSFont = NSFont.systemFont(ofSize: 18)
 		let fontAttributes = NSDictionary(object: theUserFont, forKey: kCTFontAttributeName as! NSCopying)
-//		let fontAttributes = NSDictionary(object: theUserFont, forKey: NSFontAttributeName as NSCopying)
 		resultsView.typingAttributes = fontAttributes as! [NSAttributedStringKey : Any]
-		resultsView.string = "NEEDED SCRIPTS\n\(results)"
+		resultsView.string = "NEEDED SCRIPTS  (\(formatter.string(from: today)))\n\(results)"
     }
     
 }
