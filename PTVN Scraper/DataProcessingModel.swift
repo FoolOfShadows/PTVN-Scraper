@@ -51,30 +51,43 @@ func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), stat
 }
 
 func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
-	//print("Processing the files")
-	var neededRxs = [VisitData]()
-	//var results = ""
-	if let thePTVNText = theFiles {
-		for file in thePTVNText {
-			do {
-				let ptvnContents = try String(contentsOf: file, encoding: .utf8)
-				let rxResults = cleanTheSelection(getRxInfo(ptvnContents), badBits: badBits)
-				let dobResults = getDOBInfo(ptvnContents)
-				let nameResults = getNameInfo(ptvnContents)
-				let markedResults = cleanTheSelection(getMarkedLines(ptvnContents), badBits: badBits)
-				
-				if (!rxResults.isEmpty) && (!markedResults.isEmpty) {
-					neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
-				} else if (!rxResults.isEmpty) || (!markedResults.isEmpty) {
-					neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
-				}
-			} catch {
-				print("Ended up in the CATCH clause")
-			}
-		}
-	}
-	//print(neededRxs)
-	return neededRxs
+    //print("Processing the files")
+    var neededRxs = [VisitData]()
+    //var results = ""
+    if let thePTVNText = theFiles {
+        for file in thePTVNText {
+            
+            do {
+                let ptvnContents = try String(contentsOf: file, encoding: .utf8)
+                //check if its a new or old style PTVN file
+                //if it's old, do the following
+                if ptvnContents.contains("#PTVNFILE#") {
+                    let dobResults = getNewDOBInfo(ptvnContents)
+                    let nameResults = getNewNameInfo(ptvnContents)
+                    let markedResults = cleanTheSelection(getMarkedLines(ptvnContents), badBits: badBits)
+                    if !markedResults.isEmpty {
+                        neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: markedResults))
+                    }
+                } else {
+                    let rxResults = cleanTheSelection(getRxInfo(ptvnContents), badBits: badBits)
+                    let dobResults = getDOBInfo(ptvnContents)
+                    let nameResults = getNameInfo(ptvnContents)
+                    let markedResults = cleanTheSelection(getMarkedLines(ptvnContents), badBits: badBits)
+                    
+                    if (!rxResults.isEmpty) && (!markedResults.isEmpty) {
+                        neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
+                    } else if (!rxResults.isEmpty) || (!markedResults.isEmpty) {
+                        neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
+                    }
+                }
+            } catch {
+                print("Ended up in the CATCH clause")
+            }
+            //if it's new, process it with a new method
+        }
+    }
+    //print(neededRxs)
+    return neededRxs
 }
 
 func getNameInfo(_ theText:String) -> String {
@@ -87,11 +100,23 @@ func getNameInfo(_ theText:String) -> String {
 	return nameInfo
 }
 
+func getNewNameInfo(_ theText:String) -> String {
+    guard let nameInfo = theText.findRegexMatchBetween("#PATIENTNAME", and: "PATIENTNAME#") else { return String() }
+    return nameInfo.removeWhiteSpace()
+}
+
 func getDOBInfo(_ theText:String) -> String {
 	var dobInfo = ""
 	guard let rawDOBInfo = theText.findRegexMatchBetween("DOB:", and: "Age:") else { return "" }
 	dobInfo = rawDOBInfo.removeWhiteSpace()
 	return dobInfo
+}
+
+func getNewDOBInfo(_ theText:String) -> String {
+    var dobInfo = String()
+    guard let rawDOBInfo = theText.findRegexMatchBetween("#PATIENTDOB", and: "PATIENTDOB#") else { return dobInfo }
+    dobInfo = rawDOBInfo.removeWhiteSpace()
+    return dobInfo
 }
 
 func getRxInfo(_ theText:String) -> [String] {
