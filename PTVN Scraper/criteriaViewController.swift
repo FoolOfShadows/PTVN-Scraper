@@ -21,6 +21,7 @@ class criteriaViewController: NSViewController {
 	var basePath = NSHomeDirectory()
 	var selectorTag = Int()
 	var chosenItems = [String]()
+    var foundData = [VisitData]()
 	
 	
     override func viewDidLoad() {
@@ -52,45 +53,56 @@ class criteriaViewController: NSViewController {
 			originFolderURL = URL(fileURLWithPath: "\(basePath)/WPCMSharedFiles/zDonna Review/01 PTVN Files")
 		}
 		
-		//print("\(originFolderURL)")
+        print("OriginFolder set to: \(originFolderURL)")
 		return originFolderURL.getFilesInDirectoryWhereNameContains(["PTVN"])
 	}
-	
-	func takeFind() -> [VisitData]? {
-		var theResults = [VisitData]()
-		let theFileURLs = processTheDirectory()
-		switch selectorTag {
-		case 0:
-			let today = Date()
-			print(today)
-			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: today, end: nil), status: .on))
-		case 1:
-			print(onDate.dateValue)
-			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: onDate.dateValue, end: nil), status: .on))
-		case 2:
-			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: afterDate.dateValue, end: nil), status: .after))
-		case 3:
-			theResults = processTheFiles(getFileNamesFrom(theFileURLs, forDate: (start: betweenStartDate.dateValue, end: betweenEndDate.dateValue), status: .between))
-		default:
-			print("Find ended up in the default case")
-			return nil
-		}
-		
-		return theResults
-	}
+    
+    
+    func getFilesForDateSelection() -> [URL]? {
+        var theResults = [URL]()
+        let theFileURLs = processTheDirectory()
+        switch selectorTag {
+        case 0:
+            let today = Date()
+            print(today)
+            theResults = getFileNamesFrom(theFileURLs, forDate: (start: today, end: nil), status: .on)
+        case 1:
+            print(onDate.dateValue)
+            theResults = getFileNamesFrom(theFileURLs, forDate: (start: onDate.dateValue, end: nil), status: .on)
+        case 2:
+            theResults = getFileNamesFrom(theFileURLs, forDate: (start: afterDate.dateValue, end: nil), status: .after)
+        case 3:
+            theResults = getFileNamesFrom(theFileURLs, forDate: (start: betweenStartDate.dateValue, end: betweenEndDate.dateValue), status: .between)
+        default:
+            print("Find ended up in the default case")
+            return nil
+        }
+        
+        return theResults
+    }
+    
 	
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        var theSender:SearchType
+        if let button = sender as? NSButton {
+            switch button.title {
+            case "Rx":
+                theSender = .MEDS
+            case "Ref":
+                theSender = .REF
+            default:
+                theSender = .ALL
+            }
 		if segue.identifier!.rawValue == "showReport" {
 			if let toViewController = segue.destinationController as? resultsViewController {
 				var results = [String]()
 				if chosenItems.isEmpty {
-				if let processedFiles = takeFind() {
+				let processedFiles = processTheFiles(getFilesForDateSelection(), for: theSender)
 					for file in processedFiles {
 						if !file.tasks.isEmpty && file.tasks != [""] {
-							//print("Tasks for patient \(file.ptName) = \(file.tasks)")
+							print("Tasks for patient \(file.ptName) = \(file.tasks)")
 						results.append(file.reportOutput())
 						}
-					}
 				}
 				toViewController.results = results.joined(separator: "\n\n")
 				} else {
@@ -99,14 +111,31 @@ class criteriaViewController: NSViewController {
 			}
 		} else if segue.identifier!.rawValue == "pick" {
 			if let toViewController = segue.destinationController as? TaskPickerViewController {
-				if let visitDataArray = takeFind() {
+				let visitDataArray = processTheFiles(getFilesForDateSelection(), for: theSender)
 				toViewController.visitDataArray = visitDataArray
-				}
 			}
 		}
 	}
+    }
+
+    
+//    @IBAction func takeFind(_ sender: NSButton) {
+//        print("Taking Find")
+//        guard let data = getFilesForDateSelection() else { return }
+//        print("The data is: \(data)")
+//        foundData = processTheFiles(data, for: .ALL)
+//    }
 	
-	@IBAction func clearChosenItems(_ sender: Any) {
+//    @IBAction func takeRX(_ sender: NSButton) {
+//        print("Taking RX")
+//        foundData = processTheFiles(getFilesForDateSelection(), for: .MEDS)
+//    }
+//
+//    @IBAction func takeRef(_ sender: NSButton) {
+//        foundData = processTheFiles(getFilesForDateSelection(), for: .REF)
+//    }
+    
+    @IBAction func clearChosenItems(_ sender: Any) {
 		chosenItems = [String]()
 	}
 }

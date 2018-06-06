@@ -50,7 +50,27 @@ func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), stat
 	return results
 }
 
-func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
+enum SearchType {
+    case ALL
+    case MEDS
+    case REF
+    case PMH
+}
+
+func processTheFiles(_ theFiles:[URL]?, for type: SearchType) -> [VisitData] {
+    var chosenFunction: (String) -> [String]
+    
+    switch type {
+    case .ALL:
+        chosenFunction = getMarkedLines(_:)
+    case .MEDS:
+        chosenFunction = getMedLines(_:)
+    case .REF:
+        chosenFunction = getRefLines(_:)
+    case .PMH:
+        chosenFunction = getMarkedLines(_:)
+    }
+    
     //print("Processing the files")
     var neededRxs = [VisitData]()
     //var results = ""
@@ -64,15 +84,17 @@ func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
                 if ptvnContents.contains("#PTVNFILE#") {
                     let dobResults = getNewDOBInfo(ptvnContents)
                     let nameResults = getNewNameInfo(ptvnContents)
-                    let markedResults = cleanTheSelection(getMarkedLines(ptvnContents), badBits: badBits)
+                    let pharmacyName = getPatientDataOfType("PHARMACY", from: ptvnContents)
+                    let markedResults = cleanTheSelection(chosenFunction(ptvnContents), badBits: badBits)
                     if !markedResults.isEmpty {
-                        neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: markedResults))
+                        neededRxs.append(VisitData(dob: dobResults, name: nameResults, pharmacy: pharmacyName, tasks: markedResults))
+                        print(neededRxs)
                     }
                 } else {
                     let rxResults = cleanTheSelection(getRxInfo(ptvnContents), badBits: badBits)
                     let dobResults = getDOBInfo(ptvnContents)
                     let nameResults = getNameInfo(ptvnContents)
-                    let markedResults = cleanTheSelection(getMarkedLines(ptvnContents), badBits: badBits)
+                    let markedResults = cleanTheSelection(chosenFunction(ptvnContents), badBits: badBits)
                     
                     if (!rxResults.isEmpty) && (!markedResults.isEmpty) {
                         neededRxs.append(VisitData(dob: dobResults, name: nameResults, tasks: rxResults + markedResults))
@@ -89,6 +111,7 @@ func processTheFiles(_ theFiles:[URL]?) -> [VisitData] {
     //print(neededRxs)
     return neededRxs
 }
+
 
 func getNameInfo(_ theText:String) -> String {
 	var nameInfo = ""
@@ -119,6 +142,11 @@ func getNewDOBInfo(_ theText:String) -> String {
     return dobInfo
 }
 
+func getPatientDataOfType(_ type:String, from theText: String) -> String {
+    print("#\(type) \(type)#")
+    return theText.findRegexMatchBetween("#\(type)", and: "\(type)#")?.removeWhiteSpace() ?? ""
+}
+
 func getRxInfo(_ theText:String) -> [String] {
 	var rxInfo = ""
 	guard let rawNeededScripts = theText.findRegexMatchBetween("\\*\\*Rx\\*\\*", and: "O\\(PE\\):") else { return [] }
@@ -132,12 +160,38 @@ func getMarkedLines(_ theText:String) -> [String] {
 	//var results = String()
 	let theLines = theText.components(separatedBy: "\n")
 	for line in theLines {
-		if line.contains("^^") {
-			let cleanLine = cleanTheSections(line, badBits: ["^^"])
+		if line.contains("^^") || line.contains("~~") || line.contains("••") {
+			let cleanLine = cleanTheSections(line, badBits: ["^^", "••", "~~"])
 			markedLines.append(cleanLine)
 		}
 	}
 	return markedLines
+}
+
+func getMedLines(_ theText:String) -> [String] {
+    var markedLines = [String]()
+    //var results = String()
+    let theLines = theText.components(separatedBy: "\n")
+    for line in theLines {
+        if line.contains("~~") {
+            let cleanLine = line.replacingOccurrences(of: "~~", with: "")
+            markedLines.append(cleanLine)
+        }
+    }
+    return markedLines
+}
+
+func getRefLines(_ theText:String) -> [String] {
+    var markedLines = [String]()
+    //var results = String()
+    let theLines = theText.components(separatedBy: "\n")
+    for line in theLines {
+        if line.contains("••") {
+            let cleanLine = line.replacingOccurrences(of: "••", with: "")
+            markedLines.append(cleanLine)
+        }
+    }
+    return markedLines
 }
 
 //Add specific characters to the beginning of each line
