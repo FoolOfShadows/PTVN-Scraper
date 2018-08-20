@@ -53,7 +53,7 @@ class criteriaViewController: NSViewController {
 			originFolderURL = URL(fileURLWithPath: "\(basePath)/WPCMSharedFiles/zDonna Review/01 PTVN Files")
 		}
 		
-        print("OriginFolder set to: \(originFolderURL)")
+        //print("OriginFolder set to: \(originFolderURL)")
 		return originFolderURL.getFilesInDirectoryWhereNameContains(["PTVN"])
 	}
     
@@ -61,6 +61,7 @@ class criteriaViewController: NSViewController {
     func getFilesForDateSelection() -> [URL]? {
         var theResults = [URL]()
         let theFileURLs = processTheDirectory()
+        //print("The tag selected is \(selectorTag)")
         switch selectorTag {
         case 0:
             let today = Date()
@@ -71,6 +72,7 @@ class criteriaViewController: NSViewController {
             theResults = getFileNamesFrom(theFileURLs, forDate: (start: onDate.dateValue, end: nil), status: .on)
         case 2:
             theResults = getFileNamesFrom(theFileURLs, forDate: (start: afterDate.dateValue, end: nil), status: .after)
+            //print("The chosen files are \(theResults)")
         case 3:
             theResults = getFileNamesFrom(theFileURLs, forDate: (start: betweenStartDate.dateValue, end: betweenEndDate.dateValue), status: .between)
         default:
@@ -85,6 +87,7 @@ class criteriaViewController: NSViewController {
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         var theSender:SearchType
         if let button = sender as? NSButton {
+            print("/n/nThe sending button is \(button.title)")
             switch button.title {
             case "Rx":
                 theSender = .MEDS
@@ -98,6 +101,7 @@ class criteriaViewController: NSViewController {
 				var results = [String]()
 				if chosenItems.isEmpty {
 				let processedFiles = processTheFiles(getFilesForDateSelection(), for: theSender)
+                    //print(processedFiles)
 					for file in processedFiles {
 						if !file.tasks.isEmpty && file.tasks != [""] {
 							print("Tasks for patient \(file.ptName) = \(file.tasks)")

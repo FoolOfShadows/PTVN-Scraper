@@ -22,14 +22,17 @@ func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), stat
 	let formatter = DateFormatter()
 	formatter.dateFormat = "yyMMdd"
 	var results = [URL]()
-	print(formatter.string(from: date.start))
+	//print(formatter.string(from: date.start))
 	switch status {
 	case .on: results = files.filter{$0.absoluteString.contains(formatter.string(from: date.start))}
 	case .before: results = []
 	case .after:
 		for item in files {
-			guard let itemDate = item.splitFileNameIntoComponents()?.last,
-				  let dateInt = Int(itemDate),
+            guard var itemDate = item.splitFileNameIntoComponents()?.last else { continue }
+            if itemDate.contains("f") {
+                itemDate = itemDate.replacingOccurrences(of: "f", with: "")
+            }
+			guard let dateInt = Int(itemDate),
 				  let startInt = Int(formatter.string(from: date.start)) else { continue }
 			if dateInt >= startInt {
 				results.append(item)
@@ -37,8 +40,12 @@ func getFileNamesFrom(_ files: [URL], forDate date:(start:Date, end:Date?), stat
 		}
 	case .between:
 		for item in files {
-			guard let itemDate = item.splitFileNameIntoComponents()?.last,
-				let dateInt = Int(itemDate),
+			guard var itemDate = item.splitFileNameIntoComponents()?.last
+                else { continue }
+            if itemDate.contains("f") {
+                itemDate = itemDate.replacingOccurrences(of: "f", with: "")
+            }
+			guard let dateInt = Int(itemDate),
 				let startInt = Int(formatter.string(from: date.start)),
 				let endInt = Int(formatter.string(from: date.end!)) else { continue }
 			if dateInt >= startInt && dateInt <= endInt {
@@ -58,6 +65,7 @@ enum SearchType {
 }
 
 func processTheFiles(_ theFiles:[URL]?, for type: SearchType) -> [VisitData] {
+    
     var chosenFunction: (String) -> [String]
     
     switch type {
@@ -75,6 +83,7 @@ func processTheFiles(_ theFiles:[URL]?, for type: SearchType) -> [VisitData] {
     var neededRxs = [VisitData]()
     //var results = ""
     if let thePTVNText = theFiles {
+        //print("\n\nFiles passed in for processing are \(thePTVNText)")
         for file in thePTVNText {
             
             do {
